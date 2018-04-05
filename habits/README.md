@@ -14,4 +14,4 @@ npm start
 
 ## MySQL DB structure
 
-[Click here](config/db-connection.js)
+[Click here](config/db-structure.sql)
