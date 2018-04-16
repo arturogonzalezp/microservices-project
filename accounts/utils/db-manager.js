@@ -1,5 +1,5 @@
 const fs = require('fs');
-const dbPath = 'accounts.json';
+const dbPath = process.cwd() + '/accounts/accounts.json';
 module.exports = {
     add: (email,password,name) => {
         var db = module.exports.getAll();

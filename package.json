@@ -1,0 +1,21 @@
+{
+  "name": "microservices-project",
+  "version": "1.0.0",
+  "description": "Project for the class **Software Architecture** based on microservices",
+  "scripts": {
+    "accounts": "node accounts/index.js",
+    "habits": "node habits/index.js",
+    "reports": "node reports/index.js",
+    "tasks": "node tasks/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arturogonzalezp/microservices-project.git"
+  },
+  "author": "César Arturo González Pérez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arturogonzalezp/microservices-project/issues"
+  },
+  "homepage": "https://github.com/arturogonzalezp/microservices-project#readme"
+}

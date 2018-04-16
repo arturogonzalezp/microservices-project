@@ -1,0 +1,199 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "API for accounts microservice in \"Software Architecture Project 2018\"",
+    "version" : "1.0.0",
+    "title" : "Accounts Microservice",
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host" : "localhost:4001",
+  "basePath" : "/",
+  "schemes" : [ "http" ],
+  "paths" : {
+    "/account" : {
+      "post" : {
+        "summary" : "Register a new user",
+        "description" : "By passing in the appropriate options, you can register a new user in the system.\n",
+        "operationId" : "addAccount",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "userAccount",
+          "description" : "User account to add",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/UserAccount"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "User created"
+          },
+          "400" : {
+            "description" : "Incorrect parameters, User already registered with the email example@example.com"
+          }
+        }
+      }
+    },
+    "/account/{email}" : {
+      "get" : {
+        "summary" : "Get user information",
+        "description" : "You can get the user information by passing the email address\n",
+        "operationId" : "Get user by email",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "email",
+          "in" : "path",
+          "description" : "The user email account",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Fetch CleanUserAccount information",
+            "schema" : {
+              "$ref" : "#/definitions/CleanUserAccount"
+            }
+          },
+          "400" : {
+            "description" : "User with the email example@example.com doesn't exist"
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "Delete account",
+        "description" : "You can get delete a user account in the system\n",
+        "operationId" : "deleteAccount",
+        "parameters" : [ {
+          "name" : "email",
+          "in" : "path",
+          "description" : "The user email account",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "User deleted"
+          },
+          "400" : {
+            "description" : "User with the email example@example.com doesn't exist"
+          }
+        }
+      }
+    },
+    "/accounts" : {
+      "get" : {
+        "summary" : "Get all accounts without passwords",
+        "description" : "You can get all user accounts in the system\n",
+        "operationId" : "getAllAccounts",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "201" : {
+            "description" : "Get all the accounts",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/CleanUserAccount"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login" : {
+      "post" : {
+        "summary" : "Login function",
+        "description" : "By passing in the appropriate options, you can login into the system.\n",
+        "operationId" : "login",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "loginInput",
+          "description" : "User email and password",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/LoginInformation"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "A Clean User Account object",
+            "schema" : {
+              "$ref" : "#/definitions/CleanUserAccount"
+            }
+          },
+          "400" : {
+            "description" : "Incorrect password, The email example@example.com is not registered"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "UserAccount" : {
+      "type" : "object",
+      "required" : [ "email", "name", "password" ],
+      "properties" : {
+        "email" : {
+          "type" : "string",
+          "example" : "example@example.com"
+        },
+        "name" : {
+          "type" : "string",
+          "example" : "Jhon Doe"
+        },
+        "password" : {
+          "type" : "string",
+          "example" : "myPassword123"
+        }
+      },
+      "example" : {
+        "password" : "myPassword123",
+        "name" : "Jhon Doe",
+        "email" : "example@example.com"
+      }
+    },
+    "CleanUserAccount" : {
+      "type" : "object",
+      "required" : [ "email", "name" ],
+      "properties" : {
+        "email" : {
+          "type" : "string",
+          "example" : "example@example.com"
+        },
+        "name" : {
+          "type" : "string",
+          "example" : "Jhon Doe"
+        }
+      },
+      "example" : {
+        "name" : "Jhon Doe",
+        "email" : "example@example.com"
+      }
+    },
+    "LoginInformation" : {
+      "type" : "object",
+      "required" : [ "email", "password" ],
+      "properties" : {
+        "email" : {
+          "type" : "string",
+          "example" : "example@example.com"
+        },
+        "password" : {
+          "type" : "string",
+          "example" : "myPassword123"
+        }
+      },
+      "example" : {
+        "password" : "myPassword123",
+        "email" : "example@example.com"
+      }
+    }
+  }
+}

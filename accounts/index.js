@@ -2,42 +2,51 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('./utils/db-manager.js');
 const ip = require('ip');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./utils/swagger.json');
 const app = express();
 const port = 4001;
-
+ 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.post('/register', (req, res) => {
-    let {email, password, name} = req.body;
-    if(db.add(email,password,name)){
-        res.send('User registered');
-    }else{
+app.post('/account', (req, res) => {
+    let { email, password, name } = req.body;
+    if (email && password && name) {
+        if (db.add(email, password, name)) {
+            res.send('User registered');
+        } else {
+            res.status(400);
+            res.send(`User already registered with the email ${email}`);
+        }
+    } else {
         res.status(400);
-        res.send(`User already registered with the email ${email}`);
+        res.send('Incorrect parameters');
     }
 });
 
-app.post('*', (req, res) => {
-    let {email, password} = req.body;
+app.post('/login', (req, res) => {
+    let { email, password } = req.body;
     var user = db.get(email);
-    if(user){
-        if(user.password == password){
+    if (user) {
+        if (user.password == password) {
             res.send(user);
-        }else{
+        } else {
             res.status(400);
             res.send('Password incorrect');
         }
-    }else{
+    } else {
         res.status(400);
         res.send(`The email ${email} is not registered`);
     }
 });
 
-app.delete('/:email', (req, res) => {
-    let {email} = req.params;
-    if(db.delete(email)){
+app.delete('/account/:email', (req, res) => {
+    let { email } = req.params;
+    if (db.delete(email)) {
+        // Delete user data from other microservices missing
         res.send('User deleted');
-    }else{
+    } else {
         res.status(400);
         res.send(`User with the email ${email} doesn't exist`);
     }
@@ -56,14 +65,14 @@ app.get('/accounts', (req, res) => {
 });
 
 app.get('/account/:email', (req, res) => {
-    let {email} = req.params;
+    let { email } = req.params;
     var user = db.get(email);
-    if(user){
+    if (user) {
         res.send({
             email: user.email,
             name: user.name
         });
-    }else{
+    } else {
         res.status(400);
         res.send(`The email ${email} is not registered`);
     }
