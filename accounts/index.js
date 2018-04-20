@@ -52,6 +52,9 @@ app.delete('/account/:email', (req, res) => {
     }
 });
 
+app.get('/discover', (req,res) => {
+    res.send('accounts');
+});
 app.get('/accounts', (req, res) => {
     var returnArray = [];
     var usersMap = db.getAll();

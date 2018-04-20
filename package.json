@@ -6,7 +6,8 @@
     "accounts": "node accounts/index.js",
     "habits": "node habits/index.js",
     "reports": "node reports/index.js",
-    "tasks": "node tasks/index.js"
+    "tasks": "node tasks/index.js",
+    "search": "node search-services.js"
   },
   "repository": {
     "type": "git",
@@ -17,5 +18,10 @@
   "bugs": {
     "url": "https://github.com/arturogonzalezp/microservices-project/issues"
   },
-  "homepage": "https://github.com/arturogonzalezp/microservices-project#readme"
+  "homepage": "https://github.com/arturogonzalezp/microservices-project#readme",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "ip": "^1.1.5",
+    "network": "^0.4.1"
+  }
 }
