@@ -4,10 +4,9 @@
 
 [SwaggerHub Docs](https://app.swaggerhub.com/apis/jinigoe/habits)
 
-## Requirements
+## System Requirements
 
 - Node +v8.1.2
-- MySQL
 
 ## Steps to run the project
 
