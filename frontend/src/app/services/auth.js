@@ -2,7 +2,26 @@ import Framework7 from 'framework7';
 
 export default class Auth {
   constructor() {
-    this.API_URL = 'http://192.168.0.5:4001';
+    this.API_URL = 'http://10.43.89.106:4001';
+  }
+
+  async deleteAccount() {
+    const user = this.getUser();
+    const promise = new Promise((resolve, reject) => {
+      Framework7.request({
+        url: `${this.API_URL}/account/${user.email}`,
+        method: 'DELETE',
+        success: (data, status, xhr) => {
+          resolve(xhr);
+          this.logout();
+        },
+        error: (xhr, status) => {
+          reject(xhr.responseText);
+        },
+      });
+    });
+    let response = await promise;
+    return response;
   }
 
   async register(user) {
@@ -49,6 +68,7 @@ export default class Auth {
       );
     });
     let response = await promise;
+    console.log(response);
     return response;
   }
 

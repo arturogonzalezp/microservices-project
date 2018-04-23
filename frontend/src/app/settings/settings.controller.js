@@ -4,8 +4,6 @@ import Auth from './../services/auth';
 const $$ = Dom7;
 
 function SettingsController(e, page) {
-  console.log('SettingsController');
-
   const auth = new Auth(app);
   const currentUser = auth.getUser();
 
@@ -40,13 +38,32 @@ function SettingsController(e, page) {
       'Are you sure?',
       'Delete account',
       () => {
-        console.log('Deletting account...');
+        deleteAccount();
       },
       () => {
         console.log('Cancel deletting account...');
       },
     );
   });
+}
+
+function deleteAccount() {
+  const auth = new Auth();
+  auth
+    .deleteAccount()
+    .then(response => {
+      app.dialog.alert(
+        'Your account has been deleted.',
+        'Deleted account',
+        () => {
+          app.views.main.router.navigate('/login/');
+        },
+      );
+    })
+    .catch(error => {
+      app.dialog.alert(error, 'Failed to delete account');
+    })
+    .finally(() => {});
 }
 
 export default SettingsController;
