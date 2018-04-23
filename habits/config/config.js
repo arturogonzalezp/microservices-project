@@ -1,5 +1,5 @@
 var config = {
-	mainRoute: '/habits',
+	mainRoute: '',
 	logger: true,
 	port: 4002
 };

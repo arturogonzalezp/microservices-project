@@ -1,11 +1,15 @@
 # Habits Microservice
 
+## API Documentation
+
+[SwaggerHub Docs](https://app.swaggerhub.com/apis/jinigoe/habits)
+
 ## Requirements
 
 - Node +v8.1.2
 - MySQL
 
-## Running the project
+## Steps to run the project
 
 ```shell
 npm install
