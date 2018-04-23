@@ -13,14 +13,13 @@ function LoginController(evt, page) {
 
 async function login(user) {
   const auth = new Auth();
+  app.dialog.progress('Please wait', 'Logging in');
   try {
     const response = await auth.login(user);
-    app.dialog.progress('Please wait', 'Logging in');
-    setTimeout(() => {
-      app.views.main.router.navigate('/settings/');
-      app.dialog.close();
-    }, 1000);
+    app.dialog.close();
+    app.views.main.router.navigate('/settings/');
   } catch (err) {
+    app.dialog.close();
     app.dialog.alert(err, 'Unable to sign in');
   }
 }
