@@ -1,6 +1,7 @@
 const fs = require('fs');
 const dbPath = process.cwd() + '/accounts/accounts.json';
 module.exports = {
+    dbPath,
     add: (email,password,name) => {
         var db = module.exports.getAll();
         if(module.exports.get(email))
@@ -34,9 +35,9 @@ module.exports = {
     initialize: () => {
         if(!fs.existsSync(dbPath)){
             fs.writeFileSync(dbPath, "{}");
-            console.log("The database was created!");
+            return 'The database was created!';
         }else{
-            console.log('The database already exists!');
+            return 'The database already exists!';
         }
     }
 };

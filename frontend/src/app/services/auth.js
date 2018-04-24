@@ -76,3 +76,20 @@ export default class Auth {
     localStorage.removeItem('user');
   }
 }
+
+          resolve(xhr);
+        },
+        (xhr, status) => {
+          reject(xhr.responseText);
+        },
+      );
+    });
+    let response = await promise;
+    console.log(response);
+    return response;
+  }
+
+  logout() {
+    localStorage.removeItem('user');
+  }
+}
