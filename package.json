@@ -7,7 +7,8 @@
     "habits": "node habits/index.js",
     "reports": "node reports/index.js",
     "tasks": "node tasks/index.js",
-    "search": "node search-services.js"
+    "search": "node search-services.js",
+    "test": "mocha tests/*.js || true"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,15 @@
     "framework7": "^2.2.1",
     "fs": "0.0.1-security",
     "ip": "^1.1.5",
+<<<<<<< HEAD
     "network": "^0.4.1",
     "npm": "^5.8.0"
+=======
+    "network": "^0.4.1"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.1.1"
+>>>>>>> 206322639ecd39177abb850ebd2566c58ffc7586
   }
 }
