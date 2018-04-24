@@ -1,14 +1,16 @@
 const http = require('http');
-const discover_timeout = 100;
+const discover_timeout = 250;
 const ports = {
     accounts: 4001,
     habits: 4002,
     tasks: 4003,
     reports: 4004
 };
+const config_file = 'services-config.json';
 module.exports = {
     ports,
     discover_timeout,
+    config_file,
     numberOfServices: () => {
         return Object.keys(ports).length;
     },
@@ -29,7 +31,7 @@ module.exports = {
                     checkedCount++;
                     if(body == key){
                         retObj[key] = ip + ':' + ports[key];
-                        console.log(`Found ${key} microservice in ${ip}:${ports[key]}`);
+                        console.log(`\nFound ${key} microservice in ${ip}:${ports[key]}`);
                     }
                     if (Object.keys(ports).length == checkedCount) {
                         if(Object.keys(retObj).length == 0){
