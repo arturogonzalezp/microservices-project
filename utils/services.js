@@ -1,5 +1,5 @@
 const http = require('http');
-const discover_timeout = 250;
+const discover_timeout = 500;
 const ports = {
     accounts: 4001,
     habits: 4002,
