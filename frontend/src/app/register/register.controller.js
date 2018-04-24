@@ -4,8 +4,8 @@ import app from './../app';
 import Auth from './../services/auth';
 
 function RegisterController(evt, page) {
-  $$('.create-account').on('click', () => {
-    var user = app.form.convertToData('#register-form');
+  $$('.create-habit').on('click', () => {
+    var habit = app.form.convertToData('#register-form');
     createUser(user);
   });
 }
