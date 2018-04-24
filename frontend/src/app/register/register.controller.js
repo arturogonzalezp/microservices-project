@@ -8,6 +8,7 @@ function RegisterController(evt, page) {
     var user = app.form.convertToData('#register-form');
     createUser(user);
   });
+  hideNavbar();
 }
 
 function createUser(user) {
@@ -21,6 +22,10 @@ function createUser(user) {
       app.dialog.alert(error, 'Unable to create account');
     })
     .finally(() => {});
+}
+
+function hideNavbar() {
+  $$('.navbar').hide();
 }
 
 export default RegisterController;

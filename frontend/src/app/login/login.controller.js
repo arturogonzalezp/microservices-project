@@ -9,6 +9,7 @@ function LoginController(evt, page) {
     const user = app.form.convertToData('#login-form');
     login(user);
   });
+  hideNavbar();
 }
 
 async function login(user) {
@@ -22,6 +23,10 @@ async function login(user) {
     app.dialog.close();
     app.dialog.alert(err, 'Unable to sign in');
   }
+}
+
+function hideNavbar() {
+  $$('.navbar').hide();
 }
 
 export default LoginController;

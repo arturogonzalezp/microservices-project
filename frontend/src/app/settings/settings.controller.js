@@ -6,9 +6,12 @@ const $$ = Dom7;
 function SettingsController(e, page) {
   const auth = new Auth(app);
   const currentUser = auth.getUser();
-
   const userText = $$('.user-name');
-  console.log(userText.text(`${userText.text()} ${currentUser.name}`));
+  const userNameText = $$('.panel-user-name');
+  userNameText.text(currentUser.name);
+  userText.text(`${userText.text()} ${currentUser.name}`);
+
+  showNavbar();
 
   $$('.open-edit-account').on('click', () => {
     const accountEditDialog = app.dialog.create({
@@ -64,6 +67,10 @@ function deleteAccount() {
       app.dialog.alert(error, 'Failed to delete account');
     })
     .finally(() => {});
+}
+
+function showNavbar() {
+  $$('.navbar').show();
 }
 
 export default SettingsController;
