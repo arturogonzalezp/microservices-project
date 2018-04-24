@@ -176,6 +176,10 @@ app.get('/task/:id', (req, res) => {
     });
 });
 
+app.get('/discover', (req,res) => {
+    res.send('Tasks');
+});
+
 app.get('*', (req, res) => {
     res.send('Tasks MicroService v1.0.0');
 });
