@@ -86,6 +86,6 @@ app.get('*', (req, res) => {
 });
 
 app.listen(port, () => {
-    db.initialize();
+    console.log(db.initialize());
     console.log(`Accounts microservice listening on ${ip.address()}:${port}!`);
 });
