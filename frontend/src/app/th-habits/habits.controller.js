@@ -62,7 +62,7 @@ function downVote(habit) {
   habits.downVote(habit);
 }
 
-function readTasks(response) {
+function readHabits(response) {
   var color = "";
   for(var habit in response){
     if(habit.score < 0){
@@ -79,7 +79,25 @@ function readTasks(response) {
       color = "blue";
     }
     $$('.cards-container').append(
-      "<div class='card'> <div class='card-header bg-color-"+color+"'>"+habit.title+"</div><div class='card-footer'><div class='card-footer segmented'><button class='button color-"+color+"'><i class='icon icon-fill f7-icons ios-only'>arrow_up</i></button><button class='button color-red'><i class='icon icon-fill f7-icons ios-only'>arrow_down</i></button></div></div></div>"
+      "<div class='card'>" + 
+        "<div class='card-header bg-color-"+color+"'>"+
+          habit.title +
+        "</div>" +
+        "<div class='card-footer'>" +
+          "<div class='card-footer segmented'>"+
+            "<button class='button color-"+color+"'>" +
+              "<i class='icon icon-fill f7-icons ios-only'>"+
+                "arrow_up"+
+              "</i>"+
+            "</button>"+
+            "<button class='button color-"+color+"'>"+
+              "<i class='icon icon-fill f7-icons ios-only'>"+
+                "arrow_down"+
+              "</i>"+
+            "</button>"+
+          "</div>"+
+        "</div>"+
+      "</div>"
     );
   }
 }
@@ -89,7 +107,7 @@ function getHabits() {
     .getHabits()
     .then(response => {
       console.log(response);
-      readTasks(response);
+      readHabits(response);
     })
     .catch(error => {
       console.log(error);

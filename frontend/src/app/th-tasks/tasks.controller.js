@@ -54,4 +54,24 @@ function getTasks() {
     .finally(() => {});
 }
 
+function readTasks(response) {
+  for(var task in response){
+    $$('.cards-container').append(
+      "<div class='card'>" + 
+        "<div class='card-header bg-color-gray'>"+
+          task.title +
+        "</div>" +
+        "<div class='card-body bg-color-gray'>"+
+          "<p>" +
+            task.description +
+          "</p>" +
+          "<p>" +
+            task.deadline +
+          "</p>" +
+        "</div>" +
+      "</div>"
+    );
+  }
+}
+
 export default TasksController;
