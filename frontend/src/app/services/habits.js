@@ -45,7 +45,7 @@ export default class Habits {
     const user = this.auth.getUser();
     const promise = new Promise((resolve, reject) => {
       Framework7.request.post(
-        `${this.API_URL}/user${user.email}/habits`,
+        `${this.API_URL}/user/${user.email}/habits`,
         habit,
         (data, status, xhr) => {
           resolve(xhr);
@@ -61,7 +61,7 @@ export default class Habits {
     const user = this.auth.getUser();
     const promise = new Promise((resolve, reject) => {
       Framework7.request.put(
-        `${this.API_URL}/user${user.email}/habits/${habit.id}`,
+        `${this.API_URL}/user/${user.email}/habits/${habit.id}`,
         habit,
         (data, status, xhr) => {
           resolve(xhr);

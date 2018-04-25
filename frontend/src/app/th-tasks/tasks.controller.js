@@ -3,68 +3,48 @@ import Dom7 from 'dom7';
 import Tasks from '../services/tasks';
 
 const $$ = Dom7;
-const habits = new Habits();
+const tasks = new Tasks();
 
-function HabitsController() {
-  console.log('Habits');
-  getHabits();
+function TasksController() {
+  console.log('Tasks');
+  getTasks();
 }
 
-function registerHabit(evt, page) {
-  $$('.create-habit').on('click', () => {
-    var habit = app.form.convertToData('#habits-form');
-    addHabit(habit);
+function registerTask(evt, page) {
+  $$('.create-task').on('click', () => {
+    var task = app.form.convertToData('#tasks-form');
+    addTask(task);
   });
 }
 
-function addHabit(habit) {
-  habits.addHabit(habit);
+function addTask(task) {
+  tasks.addTask(task);
 }
 
-function alterHabit(evt, page) {
-  $$('.update-habit').on('click', () => {
-    var habit = app.form.convertToData('#habits-update-form');
-    updateHabit(habit);
+function alterTask(evt, page) {
+  $$('.update-task').on('click', () => {
+    var task = app.form.convertToData('#tasks-update-form');
+    updatetask(task);
   });
 }
 
-function updateHabit(habit) {
-  habits.updateHabit(habit);
+function updatetask(task) {
+  tasks.updatetask(task);
 }
 
-function removeHabit(evt, page) {
-  $$('.delete-habit').on('click', () => {
-    deleteHabit(habit);
+function removeTask(evt, page) {
+  $$('.delete-task').on('click', () => {
+    deletetask(task);
   });
 }
 
-function deleteHabit(habit) {
-  habits.deleteHabit(habit);
+function deleteTask(task) {
+  tasks.deleteTask(task);
 }
 
-function addScore(evt, page) {
-  $$('.upScore-habit').on('click', () => {
-    upVote(habit);
-  });
-}
-
-function upVote(habit) {
-  habits.upVote(habit);
-}
-
-function substractScore(evt, page) {
-  $$('.downScore-habit').on('click', () => {
-    downVote(habit);
-  });
-}
-
-function downVote(habit) {
-  habits.downVote(habit);
-}
-
-function getHabits() {
-  habits
-    .getHabits()
+function getTasks() {
+  tasks
+    .getTasks()
     .then(response => {
       console.log(response);
     })
@@ -74,4 +54,4 @@ function getHabits() {
     .finally(() => {});
 }
 
-export default HabitsController;
+export default TasksController;

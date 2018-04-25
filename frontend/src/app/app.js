@@ -9,6 +9,7 @@ import registerRouting from './register/register.routing';
 import loginRouting from './login/login.routing';
 import settingsRouting from './settings/settings.routing';
 import habitsRouting from './th-habits/habits.routing';
+import tasksRouting from './th-tasks/tasks.routing';
 import Dom7 from 'dom7';
 import Auth from './services/auth';
 
@@ -28,7 +29,7 @@ const app = new Framework7({
     swipe: 'left',
   },
   // Add default routes
-  routes: [loginRouting, registerRouting, settingsRouting, habitsRouting],
+  routes: [loginRouting, registerRouting, settingsRouting, habitsRouting, tasksRouting],
 });
 
 const user = auth.getUser();
