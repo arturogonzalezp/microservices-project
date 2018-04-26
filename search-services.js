@@ -5,6 +5,11 @@ var services_locations = {};
 var ip_list = [];
 var ip_list_count = 0;
 const writeLocations = () => {
+    Object.keys(services.ports).forEach((service) => {
+        if(!services_locations[service]){
+            services_locations[service] = 'localhost:' + services.ports[service];
+        }
+    });
     fs.writeFileSync(services.config_file, JSON.stringify(services_locations));
     console.log(`\nUpdated ${services.config_file} file`);
 };
@@ -39,5 +44,6 @@ ip_info.loadNetworkInfo((info) => {
     ip_list = ip_info.getIpAddressList(info);
     ip_list_count = ip_list.length;
     console.log(`Checking network ${info.networkAddress}/${info.subnetMaskLength} (${ip_list_count} hosts)`);
+    writeLocations();
     searchForServicesInList();
 });
