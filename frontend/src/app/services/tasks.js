@@ -4,7 +4,7 @@ import Auth from './auth';
 export default class Tasks {
   constructor() {
     this.auth = new Auth();
-    this.API_URL = 'http://localhost:4003';
+    this.API_URL = 'http://192.168.1.72:4003';
   }
 
   async getTask(taskId) {
@@ -78,12 +78,13 @@ export default class Tasks {
   }
 
   async updateTask(task) {
+    console.log(task);
     const user = this.auth.getUser();
     const promise = new Promise((resolve, reject) => {
       Framework7.request({
         url: `${this.API_URL}/task/${task.id}`,
         method: 'PUT',
-        task,
+        data: task,
         success: (data, status, xhr) => {
           resolve(data);
         },
