@@ -16,9 +16,9 @@ function TasksController() {
     subtitle: 'Notification with close on click',
     text: 'Click me to close',
     closeOnClick: true,
-  })
+  });
 
-  $$('.open-click-to-close').on('click', function () {
+  $$('.open-click-to-close').on('click', function() {
     notificationClickToClose.open();
   });
 
@@ -114,7 +114,9 @@ function readTasks(response) {
   for (let myTask in parsedResponse.data) {
     let task = parsedResponse.data[myTask];
     let date = task.due_date;
-    //.split('T')[0];
+    let newDate = new Date(date).toString();
+    let splitNewDate = newDate.split(' ');
+    let formatedDate = splitNewDate[0] + ' ' + splitNewDate[1] + ' ' + splitNewDate[2]; 
     let taskCard = $$(`<div class="card">
         <div class="card-header bg-color-gray">
         ${task.title}
@@ -127,7 +129,7 @@ function readTasks(response) {
         </div>
         <div class="card-body">
           <p> ${task.description}</p>
-          <p> ${date}</p>
+          <p> Due date: ${formatedDate}</p>
         </div>
       </div>
       `);
@@ -188,9 +190,6 @@ function readTasks(response) {
         .catch(error => {});
     });
   });
-
-
-
 }
 
 export default TasksController;
