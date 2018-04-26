@@ -1,0 +1,418 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "API for habits microservice in “Software Architecture Project 2018\"",
+    "version" : "1.1.0",
+    "title" : "Habits API",
+    "contact" : {
+      "email" : "jinigoe@gmail.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host" : "virtserver.swaggerhub.com",
+  "basePath" : "/jinigoe/habits/1.0.0",
+  "tags" : [ {
+    "name" : "users",
+    "description" : "Operations available to regular users"
+  }, {
+    "name" : "admins",
+    "description" : "Secured Admin-only calls"
+  }, {
+    "name" : "services",
+    "description" : "General API services"
+  } ],
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/discover" : {
+      "get" : {
+        "tags" : [ "services" ],
+        "summary" : "Retrieves the type of service provided by the API",
+        "description" : "Gets the API service",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "habits"
+          }
+        }
+      }
+    },
+    "/user/habits" : {
+      "get" : {
+        "tags" : [ "admins" ],
+        "summary" : "Retrieves all existing habits of all users",
+        "description" : "Retrieves all existing habits of all users",
+        "operationId" : "getAllHabits",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Habits successfully retrieved!",
+            "schema" : {
+              "$ref" : "#/definitions/getHabit"
+            }
+          },
+          "500" : {
+            "description" : "Database connection/query error"
+          }
+        }
+      }
+    },
+    "/user/{email}/habits" : {
+      "get" : {
+        "tags" : [ "users" ],
+        "summary" : "Retrieve all user's habits",
+        "description" : "Get the list of habits of an specific user by passing its email",
+        "operationId" : "getUserHabits",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "email",
+          "in" : "path",
+          "description" : "User email",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "User habits successfully retrieved!",
+            "schema" : {
+              "$ref" : "#/definitions/getHabit"
+            }
+          },
+          "500" : {
+            "description" : "Database connection/query error"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "users" ],
+        "summary" : "Create a new user habit",
+        "description" : "Creates a new user habit by passing its email",
+        "operationId" : "createUserHabit",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "email",
+          "in" : "path",
+          "description" : "User email",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Habit object to create",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/postHabit"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The habit was successfully added!"
+          },
+          "500" : {
+            "description" : "Database connection/query error. Title, type and difficulty parameters can't be null!"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "admins" ],
+        "summary" : "Deletes all user habits",
+        "description" : "Deletes all user's habits by passing its email",
+        "operationId" : "deleteAllUserHabits",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "email",
+          "in" : "path",
+          "description" : "User email",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "All the habits of the user example@example.com have been successfully deleted!"
+          },
+          "500" : {
+            "description" : "Database connection/query error"
+          }
+        }
+      }
+    },
+    "/user/{email}/habits/{id}" : {
+      "get" : {
+        "tags" : [ "users" ],
+        "summary" : "Retrieves user habit by ID",
+        "description" : "Get habit parameters by passing its ID and user email",
+        "operationId" : "getHabitById",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Habit ID",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "email",
+          "in" : "path",
+          "description" : "User email",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Habit successfully retrieved!",
+            "schema" : {
+              "$ref" : "#/definitions/getHabit"
+            }
+          },
+          "400" : {
+            "description" : "There is no habit with ID 1 assigned to the user example@example.com"
+          },
+          "500" : {
+            "description" : "Database connection/query error"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "users" ],
+        "summary" : "Updates user habit by ID",
+        "description" : "Update habit parameters by passing its ID and user email",
+        "operationId" : "updateHabitById",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Habit ID",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "email",
+          "in" : "path",
+          "description" : "User email",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Habit object with the information updated",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/updateHabit"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The habit with ID 1 has been successfully updated!"
+          },
+          "400" : {
+            "description" : "There is no habit with ID 1 assigned to the user example@example.com"
+          },
+          "500" : {
+            "description" : "Database connection/query error"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "users" ],
+        "summary" : "Deletes user habit by ID",
+        "description" : "Delete habit by passing its ID and user email",
+        "operationId" : "deleteHabitById",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Habit ID",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "email",
+          "in" : "path",
+          "description" : "User email",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The habit with ID 1 has been successfully deleted!"
+          },
+          "400" : {
+            "description" : "There is no habit with ID 1 assigned to the user example@example.com"
+          },
+          "500" : {
+            "description" : "Database connection/query error"
+          }
+        }
+      }
+    },
+    "/user/{email}/habits/{id}/score/add" : {
+      "patch" : {
+        "tags" : [ "users" ],
+        "summary" : "Sums points to the habit's score",
+        "description" : "Updates the user's score by adding points",
+        "operationId" : "sumHabitScore",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Habit id",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "email",
+          "in" : "path",
+          "description" : "User email",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Habit score successfully upvoted!",
+            "schema" : {
+              "$ref" : "#/definitions/updatedScore"
+            }
+          },
+          "400" : {
+            "description" : "There is no habit with ID 1 assigned to the user example@example.com"
+          },
+          "500" : {
+            "description" : "Database connection/query error"
+          }
+        }
+      }
+    },
+    "/user/{email}/habits/{id}/score/subtract" : {
+      "patch" : {
+        "tags" : [ "users" ],
+        "summary" : "Subtracts points to the habit's score",
+        "description" : "Updates the user's score by subtracting points",
+        "operationId" : "reduceHabitScore",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Habit id",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "email",
+          "in" : "path",
+          "description" : "User email",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Habit score successfully downvoted!",
+            "schema" : {
+              "$ref" : "#/definitions/updatedScore"
+            }
+          },
+          "400" : {
+            "description" : "There is no habit with ID 1 assigned to the user example@example.com"
+          },
+          "500" : {
+            "description" : "Database connection/query error"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "getHabit" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "example" : 1
+        },
+        "user_email" : {
+          "type" : "string",
+          "example" : "example@example.com"
+        },
+        "title" : {
+          "type" : "string",
+          "example" : "Smoke"
+        },
+        "type" : {
+          "type" : "string",
+          "example" : "Bad"
+        },
+        "difficulty" : {
+          "type" : "string",
+          "example" : "Hard"
+        },
+        "score" : {
+          "type" : "number",
+          "example" : 2.5
+        }
+      },
+      "example" : {
+        "difficulty" : "Hard",
+        "score" : 2.5,
+        "user_email" : "example@example.com",
+        "id" : 1,
+        "title" : "Smoke",
+        "type" : "Bad"
+      }
+    },
+    "updateHabit" : {
+      "type" : "object",
+      "required" : [ "difficulty", "score", "title", "type" ],
+      "properties" : {
+        "title" : {
+          "type" : "string",
+          "example" : "Smoke"
+        },
+        "type" : {
+          "type" : "string",
+          "example" : "Bad"
+        },
+        "difficulty" : {
+          "type" : "string",
+          "example" : "Hard"
+        },
+        "score" : {
+          "type" : "number",
+          "example" : 10.0
+        }
+      }
+    },
+    "postHabit" : {
+      "type" : "object",
+      "required" : [ "difficulty", "title", "type" ],
+      "properties" : {
+        "title" : {
+          "type" : "string",
+          "example" : "Smoke"
+        },
+        "type" : {
+          "type" : "string",
+          "example" : "Bad"
+        },
+        "difficulty" : {
+          "type" : "string",
+          "example" : "Hard"
+        }
+      }
+    },
+    "updatedScore" : {
+      "type" : "object",
+      "properties" : {
+        "message" : {
+          "type" : "string",
+          "example" : "The score of the habit with ID 1 has been successfully upvoted!"
+        },
+        "score" : {
+          "type" : "number",
+          "example" : -12.0
+        }
+      },
+      "example" : {
+        "score" : -12.0,
+        "message" : "The score of the habit with ID 1 has been successfully upvoted!"
+      }
+    }
+  }
+}
