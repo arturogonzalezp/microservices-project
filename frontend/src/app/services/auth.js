@@ -2,7 +2,7 @@ import Framework7 from 'framework7';
 
 export default class Auth {
   constructor() {
-    this.API_URL = 'http://10.43.89.106:4001';
+    this.API_URL = 'http://localhost:4001';
   }
 
   async deleteAccount() {
@@ -60,6 +60,23 @@ export default class Auth {
           const userObj = JSON.parse(data);
           delete userObj.password;
           localStorage.setItem('user', JSON.stringify(userObj));
+          resolve(xhr);
+        },
+        (xhr, status) => {
+          reject(xhr.responseText);
+        },
+      );
+    });
+    let response = await promise;
+    console.log(response);
+    return response;
+  }
+
+  logout() {
+    localStorage.removeItem('user');
+  }
+}
+
           resolve(xhr);
         },
         (xhr, status) => {
