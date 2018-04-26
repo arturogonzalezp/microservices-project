@@ -63,4 +63,4 @@ typings/
 # Custom
 **/package-lock.json
 accounts/accounts.json
-services-config.json
+*/services-config.json

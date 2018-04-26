@@ -6,7 +6,7 @@ const ports = {
     tasks: 4003,
     reports: 4004
 };
-const config_file = 'services-config.json';
+const config_file = 'frontend/services-config.json';
 module.exports = {
     ports,
     discover_timeout,
