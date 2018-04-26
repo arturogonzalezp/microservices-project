@@ -5,9 +5,13 @@ import Tasks from '../services/tasks';
 const $$ = Dom7;
 const tasks = new Tasks();
 
+var router;
+
 function TasksController() {
   console.log('Tasks');
   getTasks();
+
+  router = app.views.main.router;
 
   var notificationClickToClose = app.notification.create({
     icon: '<i class="icon demo-icon">7</i>',
@@ -16,9 +20,9 @@ function TasksController() {
     subtitle: 'Notification with close on click',
     text: 'Click me to close',
     closeOnClick: true,
-  })
+  });
 
-  $$('.open-click-to-close').on('click', function () {
+  $$('.open-click-to-close').on('click', function() {
     notificationClickToClose.open();
   });
 
@@ -64,11 +68,19 @@ function newTask(task) {
       console.log('Chingo');
       console.log(error);
     })
-    .finally(() => {});
+    .finally(() => {
+      router.refreshPage();
+    });
 }
 
 function deleteTask(task) {
-  tasks.deleteTask(task);
+  tasks
+    .deleteTask(task)
+    .then()
+    .catch()
+    .finally(() => {
+      router.refreshPage();
+    });
 }
 
 function editTask(task) {
@@ -80,6 +92,9 @@ function editTask(task) {
     })
     .catch(error => {
       console.log(error);
+    })
+    .finally(() => {
+      router.refreshPage();
     });
 }
 
@@ -114,23 +129,25 @@ function readTasks(response) {
   for (let myTask in parsedResponse.data) {
     let task = parsedResponse.data[myTask];
     let date = task.due_date;
-    //.split('T')[0];
-    let taskCard = $$(`<div class="card">
+    let newDate = new Date(date);
+    let splitNewDate = newDate.toString().split(' ');
+    let formatedDate =
+      splitNewDate[0] + ' ' + splitNewDate[1] + ' ' + splitNewDate[2];
+    let taskCard = $$(
+      `<div class="card">
         <div class="card-header bg-color-gray">
-        ${task.title}
-        <button class="button open-edit-task id-${task.id}">
-          editar
-        </button>
-        <button class="button delete-task id-${task.id}">
-          Borrar
-        </button>
+          <h4>${task.title}</h4>
         </div>
-        <div class="card-body">
-          <p> ${task.description}</p>
-          <p> ${date}</p>
+        <div class="card-content card-content-padding">
+          <p>${task.description}</p>
+          <p>Due date: ${formatedDate}</p>
         </div>
-      </div>
-      `);
+        <div class="card-footer">
+          <button class="button open-edit-task id-${task.id}">Edit</button>
+          <button class="button delete-task id-${task.id}">Delete</button>
+        </div>
+      </div>`,
+    );
     $$('.cards-container').append(taskCard);
   }
 
@@ -188,9 +205,6 @@ function readTasks(response) {
         .catch(error => {});
     });
   });
-
-
-
 }
 
 export default TasksController;
