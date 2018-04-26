@@ -16,8 +16,8 @@ module.exports = {
                 user_id: email,
                 title: task.title,
                 description: task.description,
-                due_date: task.dueDate,
-                reminder_date: task.reminder
+                due_date: task.due_date,
+                reminder_date: task.reminder_date
             };
             
             conn.query(query, taskPost, function(err, result, fields) {
@@ -106,7 +106,7 @@ module.exports = {
         pool.getConnection(function (err, conn) {
             var query = "UPDATE Task SET title = ?, description = ?, due_date = ?, reminder_date = ? WHERE id = ?";
             
-            conn.query(query, [task.title, task.description, task.dueDate, task.reminder, taskId], function(err, result, fields) {
+            conn.query(query, [task.title, task.description, task.due_date, task.reminder_date, taskId], function(err, result, fields) {
                 if (err) {
                     return callback(err, false);   
                 }
