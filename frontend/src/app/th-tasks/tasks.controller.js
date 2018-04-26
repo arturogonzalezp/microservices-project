@@ -168,10 +168,10 @@ function readTasks(response) {
           <p>${task.description}</p>
           <p>Due date: ${formatedDate}</p>
         </div>
-        <div class="card-body">
-          <p> ${task.description}</p>
-          <p> Due date: ${formatedDate}</p>
-        </div>
+        <div class="card-footer">
+          <button class="button open-edit-task id-${task.id}">Edit</button>
+          <button class="button delete-task id-${task.id}">Delete</button>
+         </div>
       </div>`,
     );
     $$('.cards-container').append(taskCard);
