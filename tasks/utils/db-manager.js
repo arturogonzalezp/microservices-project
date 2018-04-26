@@ -9,6 +9,7 @@ var pool = mysql.createPool({
 
 module.exports = {
     addTask: (email,task, callback) => {
+        console.log("adding tasks...");
         pool.getConnection(function (err, conn) {
             var query = "INSERT INTO Task SET ?";
             var taskPost = {
