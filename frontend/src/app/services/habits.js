@@ -83,7 +83,7 @@ export default class Habits {
       Framework7.request({
         url: `${this.API_URL}/user/${user.email}/habits/${habit.id}`,
         method: 'PUT',
-        habit,
+        data: habit,
         success: (data, status, xhr) => {
           resolve(data);
         },

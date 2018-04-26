@@ -12,11 +12,12 @@ import habitsRouting from './th-habits/habits.routing';
 import tasksRouting from './th-tasks/tasks.routing';
 import Dom7 from 'dom7';
 import Auth from './services/auth';
+import notification from 'framework7/dist/components/notification/notification.js';
 
 const $$ = Dom7;
 const auth = new Auth();
 
-Framework7.use([Dialog, Form, Modal, Panel]);
+Framework7.use([Dialog, Form, Modal, notification, Panel]);
 const app = new Framework7({
   // App root element
   root: '#app',
@@ -29,7 +30,13 @@ const app = new Framework7({
     swipe: 'left',
   },
   // Add default routes
-  routes: [loginRouting, registerRouting, settingsRouting, habitsRouting, tasksRouting],
+  routes: [
+    loginRouting,
+    registerRouting,
+    settingsRouting,
+    habitsRouting,
+    tasksRouting,
+  ],
 });
 
 const user = auth.getUser();

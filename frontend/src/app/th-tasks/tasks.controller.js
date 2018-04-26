@@ -9,6 +9,19 @@ function TasksController() {
   console.log('Tasks');
   getTasks();
 
+  var notificationClickToClose = app.notification.create({
+    icon: '<i class="icon demo-icon">7</i>',
+    title: 'Framework7',
+    titleRightText: 'now',
+    subtitle: 'Notification with close on click',
+    text: 'Click me to close',
+    closeOnClick: true,
+  })
+
+  $$('.open-click-to-close').on('click', function () {
+    notificationClickToClose.open();
+  });
+
   $$('.open-add-task').on('click', () => {
     const addTaskDialog = app.dialog.create({
       el: $$('.add-task-dialog'),
@@ -45,9 +58,7 @@ function newTask(task) {
   tasks
     .newTask(task)
     .then(response => {
-      console.log('YEAH');
       console.log(response);
-      console.log('--------');
     })
     .catch(error => {
       console.log('Chingo');
@@ -61,6 +72,7 @@ function deleteTask(task) {
 }
 
 function editTask(task) {
+  console.log(task);
   tasks
     .updateTask(task)
     .then(response => {
@@ -101,7 +113,8 @@ function readTasks(response) {
   console.log(parsedResponse.data);
   for (let myTask in parsedResponse.data) {
     let task = parsedResponse.data[myTask];
-    let date = task.due_date.split('T')[0];
+    let date = task.due_date;
+    //.split('T')[0];
     let taskCard = $$(`<div class="card">
         <div class="card-header bg-color-gray">
         ${task.title}
@@ -120,12 +133,13 @@ function readTasks(response) {
       `);
     $$('.cards-container').append(taskCard);
   }
+
   $$('.delete-task').on('click', ev => {
     let id = ev.toElement.classList[2].split('-')[1];
     getTask(id)
       .then(response => {
         const parsedResponse = JSON.parse(response);
-        deleteTask(parsedResponse[0]);
+        deleteTask(parsedResponse.data[0]);
       })
       .catch(error => {});
   });
@@ -157,17 +171,26 @@ function readTasks(response) {
       getTask(id)
         .then(response => {
           const parsedResponse = JSON.parse(response);
+          const newTask = parsedResponse.data[0];
+          delete newTask.title;
+          delete newTask.description;
+          delete newTask.due_date;
+          delete newTask.reminder_date;
           var task = app.form.convertToData('#edit-tasks-form');
-          parsedResponse[0].title = task.title;
-          parsedResponse[0].description = task.description;
-          parsedResponse[0].dueDate = task.dueDate;
-          parsedResponse[0].reminder = task.reminder;
-          console.log(parsedResponse[0]);
-          editTask(parsedResponse[0]);
+          console.log(task);
+          newTask.title = task.title;
+          newTask.description = task.description;
+          newTask.due_date = task.due_date;
+          newTask.reminder_date = task.reminder_date;
+          console.log(newTask);
+          editTask(newTask);
         })
         .catch(error => {});
     });
   });
+
+
+
 }
 
 export default TasksController;

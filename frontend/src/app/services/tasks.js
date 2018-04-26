@@ -4,7 +4,7 @@ import Auth from './auth';
 export default class Tasks {
   constructor() {
     this.auth = new Auth();
-    this.API_URL = 'http://localhost:4003';
+    this.API_URL = 'http://192.168.1.72:4003';
   }
 
   async getTask(taskId) {
@@ -78,34 +78,41 @@ export default class Tasks {
   }
 
   async updateTask(task) {
+    console.log(task);
     const user = this.auth.getUser();
     const promise = new Promise((resolve, reject) => {
-      Framework7.request.put(
-        `${this.API_URL}/task/${task.id}`,
-        task,
-        (data, status, xhr) => {
+      Framework7.request({
+        url: `${this.API_URL}/task/${task.id}`,
+        method: 'PUT',
+        data: task,
+        success: (data, status, xhr) => {
           resolve(data);
         },
-        (xhr, status) => {
+        error: (xhr, status) => {
           reject(xhr.responseText);
         },
-      );
+      });
     });
+    let response = await promise;
+    return promise;
   }
 
   async deleteTask(task) {
     const user = this.auth.getUser();
     const promise = new Promise((resolve, reject) => {
-      Framework7.request.delete(
-        `${this.API_URL}/task/${task.id}`,
+      Framework7.request({
+        url: `${this.API_URL}/task/${task.id}`,
+        method: 'DELETE',
         task,
-        (data, status, xhr) => {
+        success: (data, status, xhr) => {
           resolve(data);
         },
-        (xhr, status) => {
+        error: (xhr, status) => {
           reject(xhr.responseText);
         },
-      );
+      });
     });
+    let response = await promise;
+    return promise;
   }
 }
