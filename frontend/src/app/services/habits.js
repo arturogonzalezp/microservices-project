@@ -4,7 +4,7 @@ import Auth from './auth';
 export default class Habits {
   constructor() {
     this.auth = new Auth();
-    this.API_URL = 'http://192.168.1.72:4002';
+    this.API_URL = 'http://localhost:4002';
   }
 
   async getHabit(habitId) {
@@ -59,8 +59,8 @@ export default class Habits {
   }
 
   async newHabit(habit) {
-    console.log('NEW HABIIIIIIT');
     const user = this.auth.getUser();
+    console.log(user);
     const promise = new Promise((resolve, reject) => {
       Framework7.request.post(
         `${this.API_URL}/user/${user.email}/habits`,
@@ -80,40 +80,27 @@ export default class Habits {
   async updateHabit(habit) {
     const user = this.auth.getUser();
     const promise = new Promise((resolve, reject) => {
-      Framework7.request.put(
-        `${this.API_URL}/user/${user.email}/habits/${habit.id}`,
+      Framework7.request({
+        url: `${this.API_URL}/user/${user.email}/habits/${habit.id}`,
+        method: 'PUT',
         habit,
-        (data, status, xhr) => {
-          resolve(xhr);
+        success: (data, status, xhr) => {
+          resolve(data);
         },
-        (xhr, status) => {
+        error: (xhr, status) => {
           reject(xhr.responseText);
         },
-      );
+      });
     });
-  }
-
-  async deleteHabit(habit) {
-    const user = this.auth.getUser();
-    const promise = new Promise((resolve, reject) => {
-      Framework7.request.delete(
-        `${this.API_URL}/user${user.email}/habits/${habit.id}`,
-        habit,
-        (data, status, xhr) => {
-          resolve(xhr);
-        },
-        (xhr, status) => {
-          reject(xhr.responseText);
-        },
-      );
-    });
+    let response = await promise;
+    return promise;
   }
 
   async deleteHabit(habit) {
     const user = this.auth.getUser();
     const promise = new Promise((resolve, reject) => {
       Framework7.request({
-        url: `${this.API_URL}/user${user.email}/habits`,
+        url: `${this.API_URL}/user/${user.email}/habits/${habit.id}`,
         method: 'DELETE',
         habit,
         success: (data, status, xhr) => {
@@ -151,7 +138,9 @@ export default class Habits {
     const user = this.auth.getUser();
     const promise = new Promise((resolve, reject) => {
       Framework7.request({
-        url: `${this.API_URL}/user/${user.email}/habits/${habit.id}/score/subtract`,
+        url: `${this.API_URL}/user/${user.email}/habits/${
+          habit.id
+        }/score/subtract`,
         method: 'PATCH',
         habit,
         success: (data, status, xhr) => {

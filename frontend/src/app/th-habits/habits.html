@@ -23,6 +23,64 @@
                     <i class="icon material-icons md-only">add</i>
                 </a>
             </div>
+            <div class="dialog edit-habit-dialog">
+                <div class="dialog-inner">
+                    <div class="dialog-title">
+                        Edit Habit
+                    </div>
+                    <div class="dialog-text">
+                    </div>
+                    <div class="list no-hairlines-md no-hairlines-ios">
+                        <form class="list form-store-data" id="edit-habits-form">
+                            <ul>
+                                <li class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Habit Title</div>
+                                        <div class="item-input-wrap">
+                                            <input name="title" type="text" placeholder="New habit name">
+                                            <span class="input-clear-button"></span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="item-content item-input">
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Difficulty</div>
+                                            <div class="item-input-wrap">
+                                                <select name="difficulty">
+                                                    <option value="easy" selected>Easy</option>
+                                                    <option value="medium">Medium</option>
+                                                    <option value="hard">Hard</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="item-content item-input">
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Type</div>
+                                            <div class="item-input-wrap">
+                                                <select name="type">
+                                                    <option value="good" selected>Good</option>
+                                                    <option value="bad">Bad</option>
+                                                    <option value="both">Both</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+                    <div class="dialog-buttons">
+                        <span class="dialog-button cancel-edit-habit">Cancel</span>
+                        <span class="dialog-button save-edit-habit edit-${
+                              habit.id
+                            } edit-habit">Save</span>
+                    </div>
+                </div>
+            </div>
             <div class="dialog add-habit-dialog">
                 <div class="dialog-inner">
                     <div class="dialog-title">

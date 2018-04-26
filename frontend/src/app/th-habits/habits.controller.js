@@ -54,31 +54,8 @@ function newHabit(habit) {
     .finally(() => {});
 }
 
-function alterHabit(evt, page) {
-  $$('.update-habit').on('click', () => {
-    var habit = app.form.convertToData('#habits-update-form');
-    updateHabit(habit);
-  });
-}
-
-function updateHabit(habit) {
-  habits.updateHabit(habit);
-}
-
-function removeHabit(evt, page) {
-  $$('#delete-habit').on('click', () => {
-    deleteHabit(habit);
-  });
-}
-
 function deleteHabit(habit) {
   habits.deleteHabit(habit);
-}
-
-function addScore(evt, page) {
-  $$('#upScore-habit').on('click', () => {
-    upVote(habit);
-  });
 }
 
 function upVote(habit) {
@@ -105,133 +82,15 @@ function downVote(habit) {
     });
 }
 
-function readHabits(response) {
-  let parsedResponse = JSON.parse(response);
-  var color = '';
-  console.log(parsedResponse.habits);
-  parsedResponse.habits.forEach(habit => {
-    if (habit.score < 0) {
-      color = 'red';
-    } else if (habit.score < 10 && habit.score >= 0) {
-      color = 'orange';
-    } else if (habit.score < 40 && habit.score >= 10) {
-      color = 'yellow';
-    } else if (habit.score < 50 && habit.score >= 40) {
-      color = 'green';
-    } else if (habit.score >= 50) {
-      color = 'blue';
-    }
-
-    let habitCard = $$(`<div class="card">
-        <div class="card-header bg-color-${color}">
-        ${habit.title}
-        <button class="button edit-${habit.id} edit-Habit">
-          editar
-          </button>
-        </div>
-        <div class="card-footer">
-          <div class="card-footer segmented">
-            <button class="button color-${color} id-${habit.id} upScore-Habit">
-              <i class="icon icon-fill f7-icons ios-only">arrow_up</i>
-            </button>
-            <button class="button color-${color} id-${
-      habit.id
-    } downScore-Habit">
-              <i class="icon icon-fill f7-icons ios-only">arrow_down</i>
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="dialog edit-habit-dialog">
-                    <div class="dialog-inner">
-                        <div class="dialog-title">
-                            Edit Habit 
-                        </div>
-                        <div class="dialog-text">
-                        </div>
-                        <div class="list no-hairlines-md no-hairlines-ios">
-                            <form class="list form-store-data" id="edit-habits-form">
-                                <ul>
-                                    <li class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Habit Title</div>
-                                            <div class="item-input-wrap">
-                                                <input name="title" type="text" placeholder="New habit name">
-                                                <span class="input-clear-button"></span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="item-content item-input">
-                                        <div class="item-content item-input">
-                                            <div class="item-inner">
-                                                <div class="item-title item-label">Difficulty</div>
-                                                <div class="item-input-wrap">
-                                                    <select name="difficulty">
-                                                        <option value="easy" selected>Easy</option>
-                                                        <option value="medium">Medium</option>
-                                                        <option value="hard">Hard</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="item-content item-input">
-                                        <div class="item-content item-input">
-                                            <div class="item-inner">
-                                                <div class="item-title item-label">Type</div>
-                                                <div class="item-input-wrap">
-                                                    <select name="type">
-                                                        <option value="good" selected>Good</option>
-                                                        <option value="bad">Bad</option>
-                                                        <option value="both">Both</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </form>
-                        </div>
-                        <div class="dialog-buttons">
-                            <span class="dialog-button cancel-edit-habit">Cancel</span>
-                            <span class="dialog-button save-edit-habit" id="edit-habit">Save</span>
-                        </div>
-                    </div>
-                </div>`);
-    $$('.cards-container').append(habitCard);
-  });
-  $$('.downScore-Habit').on('click', ev => {
-    let id = ev.toElement.classList[2].split('-')[1];
-    getHabit(id)
-      .then(response => {
-        const parsedResponse = JSON.parse(response);
-        downVote(parsedResponse[0]);
-      })
-      .catch(error => {});
-  });
-  $$('.upScore-Habit').on('click', ev => {
-    let id = ev.toElement.classList[2].split('-')[1];
-    getHabit(id)
-      .then(response => {
-        const parsedResponse = JSON.parse(response);
-        upVote(parsedResponse[0]);
-      })
-      .catch(error => {});
-  });
-  $$('.edit-Habit').on('click', ev => {
-    let id = ev.toElement.classList[2].split('-')[1];
-    getHabit(id)
-      .then(response => {
-        const parsedResponse = JSON.parse(response);
-        var habit = app.form.convertToData('#edit-habit-form');
-        editHabit(parsedResponse[0]);
-      })
-      .catch(error => {});
-  });
-}
-
-function editHabit(habitId) {
-  const habit = getHabit(habitId);
+function editHabit(habit) {
+  habits
+    .updateHabit(habit)
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => {
+      console.log(error);
+    });
 }
 
 async function getHabit(habitId) {
@@ -256,6 +115,116 @@ function getHabits() {
       console.log(error);
     })
     .finally(() => {});
+}
+
+function readHabits(response) {
+  let parsedResponse = JSON.parse(response);
+  var color = '';
+  console.log(parsedResponse.habits);
+  parsedResponse.habits.forEach(habit => {
+    if (habit.score < 0) {
+      color = 'red';
+    } else if (habit.score < 10 && habit.score >= 0) {
+      color = 'orange';
+    } else if (habit.score < 40 && habit.score >= 10) {
+      color = 'yellow';
+    } else if (habit.score < 50 && habit.score >= 40) {
+      color = 'green';
+    } else if (habit.score >= 50) {
+      color = 'blue';
+    }
+
+    let habitCard = $$(`<div class="card">
+        <div class="card-header bg-color-${color}">
+        ${habit.title}
+        <button class="button open-edit-Habit id-${habit.id}">
+          editar
+          </button>
+          <button class="button delete-Habit id-${habit.id}">
+          Borrar
+          </button>
+        </div>
+        <div class="card-footer">
+          <div class="card-footer segmented">
+            <button class="button color-${color} id-${habit.id} upScore-Habit">
+              <i class="icon icon-fill f7-icons ios-only">arrow_up</i>
+            </button>
+            <button class="button color-${color} id-${
+      habit.id
+    } downScore-Habit">
+              <i class="icon icon-fill f7-icons ios-only">arrow_down</i>
+            </button>
+          </div>
+        </div>
+      </div>
+      `);
+    $$('.cards-container').append(habitCard);
+  });
+  $$('.downScore-Habit').on('click', ev => {
+    let id = ev.toElement.classList[2].split('-')[1];
+    getHabit(id)
+      .then(response => {
+        const parsedResponse = JSON.parse(response);
+        downVote(parsedResponse[0]);
+      })
+      .catch(error => {});
+  });
+  $$('.upScore-Habit').on('click', ev => {
+    let id = ev.toElement.classList[2].split('-')[1];
+    getHabit(id)
+      .then(response => {
+        const parsedResponse = JSON.parse(response);
+        upVote(parsedResponse[0]);
+      })
+      .catch(error => {});
+  });
+  $$('.delete-Habit').on('click', ev => {
+    let id = ev.toElement.classList[2].split('-')[1];
+    getHabit(id)
+      .then(response => {
+        const parsedResponse = JSON.parse(response);
+        deleteHabit(parsedResponse[0]);
+      })
+      .catch(error => {});
+  });
+  $$('.open-edit-Habit').on('click', ev => {
+    console.log('edit');
+    var id = ev.toElement.classList[2].split('-')[1];
+    const editHabitDialog = app.dialog.create({
+      el: $$('.edit-habit-dialog'),
+      on: {
+        opened: () => {
+          console.log('Open');
+        },
+      },
+    });
+
+    editHabitDialog.open();
+
+    $$('.save-edit-habit').on('click', () => {
+      console.log('Saved account details');
+      editHabitDialog.close();
+    });
+
+    $$('.cancel-edit-habit').on('click', () => {
+      console.log('Cancel edit account');
+      editHabitDialog.close();
+    });
+
+    $$('.edit-habit').on('click', ev => {
+      getHabit(id)
+        .then(response => {
+          const parsedResponse = JSON.parse(response);
+          var habit = app.form.convertToData('#edit-habits-form');
+          parsedResponse[0].title = habit.title;
+          parsedResponse[0].difficulty = habit.difficulty;
+          parsedResponse[0].type = habit.type;
+          console.log(parsedResponse[0]);
+          editHabit(parsedResponse[0]);
+        })
+        .catch(error => {});
+    });
+  });
 }
 
 export default HabitsController;

@@ -24,6 +24,7 @@
     "es6": "0.0.7",
     "framework7": "^2.2.1",
     "fs": "0.0.1-security",
+    "habits": "file:habits",
     "ip": "^1.1.5",
     "network": "^0.4.1"
   },

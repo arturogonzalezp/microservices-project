@@ -4,7 +4,7 @@ import Auth from './auth';
 export default class Tasks {
   constructor() {
     this.auth = new Auth();
-    this.API_URL = 'http://192.168.1.72:4003';
+    this.API_URL = 'http://localhost:4003';
   }
 
   async getTasks() {
