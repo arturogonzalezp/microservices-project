@@ -47,6 +47,7 @@ function getTasks() {
     .getTasks()
     .then(response => {
       console.log(response);
+      readTasks(response);
     })
     .catch(error => {
       console.log(error);

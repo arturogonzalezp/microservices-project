@@ -4,7 +4,24 @@ import Auth from './auth';
 export default class Habits {
   constructor() {
     this.auth = new Auth();
-    this.API_URL = 'http://192.168.0.5:4002';
+    this.API_URL = 'http://192.168.1.72:4002';
+  }
+
+  async getHabit(habitId) {
+    const user = this.auth.getUser();
+    const promise = new Promise((resolve, reject) => {
+      Framework7.request.get(
+        `${this.API_URL}/user/${user.email}/habits/${habitId}`,
+        (data, status, xhr) => {
+          resolve(data);
+        },
+        (xhr, status) => {
+          reject(xhr.responseText);
+        },
+      );
+    });
+    const response = await promise;
+    return response;
   }
 
   async getHabits() {
@@ -42,19 +59,22 @@ export default class Habits {
   }
 
   async newHabit(habit) {
+    console.log('NEW HABIIIIIIT');
     const user = this.auth.getUser();
     const promise = new Promise((resolve, reject) => {
       Framework7.request.post(
         `${this.API_URL}/user/${user.email}/habits`,
         habit,
         (data, status, xhr) => {
-          resolve(xhr);
+          resolve(data);
         },
         (xhr, status) => {
           reject(xhr.responseText);
         },
       );
     });
+    const response = await promise;
+    return response;
   }
 
   async updateHabit(habit) {
@@ -89,51 +109,60 @@ export default class Habits {
     });
   }
 
-  async deleteUserHabits(habit) {
+  async deleteHabit(habit) {
     const user = this.auth.getUser();
     const promise = new Promise((resolve, reject) => {
-      Framework7.request.delete(
-        `${this.API_URL}/user${user.email}/habits`,
+      Framework7.request({
+        url: `${this.API_URL}/user${user.email}/habits`,
+        method: 'DELETE',
         habit,
-        (data, status, xhr) => {
+        success: (data, status, xhr) => {
           resolve(xhr);
         },
-        (xhr, status) => {
+        error: (xhr, status) => {
           reject(xhr.responseText);
         },
-      );
+      });
     });
+    let response = await promise;
+    return promise;
   }
 
   async upVote(habit) {
     const user = this.auth.getUser();
     const promise = new Promise((resolve, reject) => {
-      Framework7.request.patch(
-        `${this.API_URL}/user${user.email}/habits/${habit.id}/score/add`,
+      Framework7.request({
+        url: `${this.API_URL}/user/${user.email}/habits/${habit.id}/score/add`,
+        method: 'PATCH',
         habit,
-        (data, status, xhr) => {
-          resolve(xhr);
+        success: (data, status, xhr) => {
+          resolve(data);
         },
-        (xhr, status) => {
+        error: (xhr, status) => {
           reject(xhr.responseText);
         },
-      );
+      });
     });
+    let response = await promise;
+    return promise;
   }
 
   async downVote(habit) {
     const user = this.auth.getUser();
     const promise = new Promise((resolve, reject) => {
-      Framework7.request.patch(
-        `${this.API_URL}/user${user.email}/habits/${habit.id}/score/substractº`,
+      Framework7.request({
+        url: `${this.API_URL}/user/${user.email}/habits/${habit.id}/score/subtract`,
+        method: 'PATCH',
         habit,
-        (data, status, xhr) => {
-          resolve(xhr);
+        success: (data, status, xhr) => {
+          resolve(data);
         },
-        (xhr, status) => {
+        error: (xhr, status) => {
           reject(xhr.responseText);
         },
-      );
+      });
     });
+    let response = await promise;
+    return promise;
   }
 }
