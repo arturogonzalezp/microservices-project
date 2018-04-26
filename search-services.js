@@ -44,6 +44,6 @@ ip_info.loadNetworkInfo((info) => {
     ip_list = ip_info.getIpAddressList(info);
     ip_list_count = ip_list.length;
     console.log(`Checking network ${info.networkAddress}/${info.subnetMaskLength} (${ip_list_count} hosts)`);
-    writeLocations();
+    //writeLocations();
     searchForServicesInList();
 });

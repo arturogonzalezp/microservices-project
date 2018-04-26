@@ -18,10 +18,12 @@ module.exports = {
         var checkedCount = 0;
         var retObj = {};
         Object.keys(ports).forEach((key) => {
-            var req = http.get({
+            var req = http.request({
                 hostname: ip,
                 port: ports[key],
-                path: '/discover'
+                path: '/discover',
+                method: 'GET',
+                headers: {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.62 Safari/537.36'}
             }, (response) => {
                 var body = '';
                 response.on('data', (d) => {
@@ -58,6 +60,7 @@ module.exports = {
                     }
                 }
             });
+            req.end();
         });
     }
 };
