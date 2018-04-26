@@ -7,11 +7,24 @@ const tasks = new Tasks();
 var tasksArray = [];
 var notificationClickToClose;
 
+var router;
+
 function TasksController() {
   console.log('Tasks');
   getTasks();
   checkTime();
 
+  router = app.views.main.router;
+
+  var notificationClickToClose = app.notification.create({
+    icon: '<i class="icon demo-icon">7</i>',
+    title: 'Framework7',
+    titleRightText: 'now',
+    subtitle: 'Notification with close on click',
+    text: 'Click me to close',
+    closeOnClick: true,
+  });
+  
   $$('.open-click-to-close').on('click', function() {
     notificationClickToClose.open();
   });
@@ -81,11 +94,19 @@ function newTask(task) {
       console.log('Chingo');
       console.log(error);
     })
-    .finally(() => {});
+    .finally(() => {
+      router.refreshPage();
+    });
 }
 
 function deleteTask(task) {
-  tasks.deleteTask(task);
+  tasks
+    .deleteTask(task)
+    .then()
+    .catch()
+    .finally(() => {
+      router.refreshPage();
+    });
 }
 
 function editTask(task) {
@@ -97,6 +118,9 @@ function editTask(task) {
     })
     .catch(error => {
       console.log(error);
+    })
+    .finally(() => {
+      router.refreshPage();
     });
 }
 
@@ -135,24 +159,21 @@ function readTasks(response) {
     let splitNewDate = newDate.toString().split(' ');
     let formatedDate =
       splitNewDate[0] + ' ' + splitNewDate[1] + ' ' + splitNewDate[2];
-
-    tasksArray.push(task);
-    let taskCard = $$(`<div class="card">
+    let taskCard = $$(
+      `<div class="card">
         <div class="card-header bg-color-gray">
-        ${task.title}
-        <button class="button open-edit-task id-${task.id}">
-          editar
-        </button>
-        <button class="button delete-task id-${task.id}">
-          Borrar
-        </button>
+          <h4>${task.title}</h4>
+        </div>
+        <div class="card-content card-content-padding">
+          <p>${task.description}</p>
+          <p>Due date: ${formatedDate}</p>
         </div>
         <div class="card-body">
           <p> ${task.description}</p>
           <p> Due date: ${formatedDate}</p>
         </div>
-      </div>
-      `);
+      </div>`,
+    );
     $$('.cards-container').append(taskCard);
   }
 

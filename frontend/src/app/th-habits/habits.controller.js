@@ -4,8 +4,10 @@ import Habits from '../services/habits';
 
 const $$ = Dom7;
 const habits = new Habits();
+var router = null;
 
 function HabitsController() {
+  router = app.views.main.router;
   console.log('Habits');
   getHabits();
 
@@ -48,11 +50,19 @@ function newHabit(habit) {
     .catch(error => {
       console.log(error);
     })
-    .finally(() => {});
+    .finally(() => {
+      router.refreshPage();
+    });
 }
 
 function deleteHabit(habit) {
-  habits.deleteHabit(habit);
+  habits
+    .deleteHabit(habit)
+    .then(response => {
+      router.refreshPage();
+    })
+    .catch(() => {})
+    .finally();
 }
 
 function upVote(habit) {
@@ -80,10 +90,12 @@ function downVote(habit) {
 }
 
 function editHabit(habit) {
+  console.log(habit);
   habits
     .updateHabit(habit)
     .then(response => {
       console.log(response);
+      router.refreshPage();
     })
     .catch(error => {
       console.log(error);
@@ -131,30 +143,39 @@ function readHabits(response) {
       color = 'blue';
     }
 
-    let habitCard = $$(`<div class="card">
+    let habitCard = $$(
+      `<div class="card">
         <div class="card-header bg-color-${color}">
-        ${habit.title}
-        <button class="button open-edit-Habit id-${habit.id}">
-          editar
-          </button>
-          <button class="button delete-Habit id-${habit.id}">
-          Borrar
-          </button>
+        <h4>${habit.title}</h4>
         </div>
         <div class="card-footer">
-          <div class="card-footer segmented">
-            <button class="button color-${color} id-${habit.id} upScore-Habit">
-              <i class="icon icon-fill f7-icons ios-only">arrow_up</i>
+          <div class="row">
+            <button class="button open-edit-Habit id-${
+              habit.id
+            } col color-gray">
+              <i class="icon icon-fill f7-icons">gear_fill</i>
             </button>
-            <button class="button color-${color} id-${
-      habit.id
-    } downScore-Habit">
-              <i class="icon icon-fill f7-icons ios-only">arrow_down</i>
+            <button class="button delete-Habit id-${habit.id} col color-red">
+              <i class="icon icon-fill f7-icons">close</i>
+            </button>
+          </div>
+          <div class="row">
+            <button class="col button button-fill color-${color} id-${
+        habit.id
+      } upScore-Habit">
+              <i class="icon icon-fill f7-icons">arrow_up</i>
+            </button>
+            <div class="padding"></div>
+            <button class="col button button-fill color-${color} id-${
+        habit.id
+      } downScore-Habit">
+              <i class="icon icon-fill f7-icons">arrow_down</i>
             </button>
           </div>
         </div>
       </div>
-      `);
+      `,
+    );
     $$('.cards-container').append(habitCard);
   });
   $$('.downScore-Habit').on('click', ev => {
@@ -184,9 +205,12 @@ function readHabits(response) {
       })
       .catch(error => {});
   });
+
   $$('.open-edit-Habit').on('click', ev => {
     console.log('edit');
-    var id = ev.toElement.classList[2].split('-')[1];
+    console.log(ev);
+    let id = ev.toElement.classList[2].split('-')[1];
+    console.log(id);
     const editHabitDialog = app.dialog.create({
       el: $$('.edit-habit-dialog'),
       on: {
@@ -211,6 +235,8 @@ function readHabits(response) {
     $$('.edit-habit').on('click', ev => {
       getHabit(id)
         .then(response => {
+          console.log(id);
+          console.log(response);
           const parsedResponse = JSON.parse(response);
           var habit = app.form.convertToData('#edit-habits-form');
           parsedResponse[0].title = habit.title;
