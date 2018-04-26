@@ -1,8 +1,10 @@
 import Framework7 from 'framework7';
+const services = require('./../../../services-config.json');
 
 export default class Auth {
   constructor() {
-    this.API_URL = 'http://localhost:4001';
+    this.API_URL = `http://${services['accounts']}`;
+    console.log(this.API_URL);
   }
 
   async deleteAccount() {
