@@ -45,9 +45,7 @@ function newTask(task) {
   tasks
     .newTask(task)
     .then(response => {
-      console.log('YEAH');
       console.log(response);
-      console.log('--------');
     })
     .catch(error => {
       console.log('Chingo');
@@ -101,7 +99,8 @@ function readTasks(response) {
   console.log(parsedResponse.data);
   for (let myTask in parsedResponse.data) {
     let task = parsedResponse.data[myTask];
-    let date = task.due_date.split('T')[0];
+    let date = task.due_date;
+    //.split('T')[0];
     let taskCard = $$(`<div class="card">
         <div class="card-header bg-color-gray">
         ${task.title}
@@ -120,12 +119,13 @@ function readTasks(response) {
       `);
     $$('.cards-container').append(taskCard);
   }
+
   $$('.delete-task').on('click', ev => {
     let id = ev.toElement.classList[2].split('-')[1];
     getTask(id)
       .then(response => {
         const parsedResponse = JSON.parse(response);
-        deleteTask(parsedResponse[0]);
+        deleteTask(parsedResponse.data[0]);
       })
       .catch(error => {});
   });
@@ -157,13 +157,15 @@ function readTasks(response) {
       getTask(id)
         .then(response => {
           const parsedResponse = JSON.parse(response);
+          console.log(parsedResponse.data[0]);
           var task = app.form.convertToData('#edit-tasks-form');
-          parsedResponse[0].title = task.title;
-          parsedResponse[0].description = task.description;
-          parsedResponse[0].dueDate = task.dueDate;
-          parsedResponse[0].reminder = task.reminder;
-          console.log(parsedResponse[0]);
-          editTask(parsedResponse[0]);
+          console.log(task);
+          parsedResponse.data[0].title = task.title;
+          parsedResponse.data[0].description = task.description;
+          parsedResponse.data[0].dueDate = task.dueDate;
+          parsedResponse.data[0].reminder = task.reminder;
+          console.log(parsedResponse.data[0]);
+          editTask(parsedResponse.data[0]);
         })
         .catch(error => {});
     });

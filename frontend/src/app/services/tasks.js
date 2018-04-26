@@ -80,32 +80,38 @@ export default class Tasks {
   async updateTask(task) {
     const user = this.auth.getUser();
     const promise = new Promise((resolve, reject) => {
-      Framework7.request.put(
-        `${this.API_URL}/task/${task.id}`,
+      Framework7.request({
+        url: `${this.API_URL}/task/${task.id}`,
+        method: 'PUT',
         task,
-        (data, status, xhr) => {
+        success: (data, status, xhr) => {
           resolve(data);
         },
-        (xhr, status) => {
+        error: (xhr, status) => {
           reject(xhr.responseText);
         },
-      );
+      });
     });
+    let response = await promise;
+    return promise;
   }
 
   async deleteTask(task) {
     const user = this.auth.getUser();
     const promise = new Promise((resolve, reject) => {
-      Framework7.request.delete(
-        `${this.API_URL}/task/${task.id}`,
+      Framework7.request({
+        url: `${this.API_URL}/task/${task.id}`,
+        method: 'DELETE',
         task,
-        (data, status, xhr) => {
+        success: (data, status, xhr) => {
           resolve(data);
         },
-        (xhr, status) => {
+        error: (xhr, status) => {
           reject(xhr.responseText);
         },
-      );
+      });
     });
+    let response = await promise;
+    return promise;
   }
 }

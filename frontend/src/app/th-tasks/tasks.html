@@ -35,7 +35,7 @@
                             <ul>
                                 <li class="item-content item-input">
                                     <div class="item-inner">
-                                        <div class="item-title item-label">Task Title</div>
+                                        <div class="item-title item-label">task Title</div>
                                         <div class="item-input-wrap">
                                             <input name="title" type="text" placeholder="New task name">
                                             <span class="input-clear-button"></span>
@@ -43,30 +43,26 @@
                                     </div>
                                 </li>
                                 <li class="item-content item-input">
-                                    <div class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Difficulty</div>
-                                            <div class="item-input-wrap">
-                                                <select name="difficulty">
-                                                    <option value="easy" selected>Easy</option>
-                                                    <option value="medium">Medium</option>
-                                                    <option value="hard">Hard</option>
-                                                </select>
-                                            </div>
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Description</div>
+                                        <div class="item-input-wrap">
+                                            <textarea name="description" class="resizable" placeholder="Description"></textarea>
                                         </div>
                                     </div>
                                 </li>
-                                <li class="item-content item-input">
-                                    <div class="item-content item-input">
-                                        <div class="item-inner">
-                                            <div class="item-title item-label">Type</div>
-                                            <div class="item-input-wrap">
-                                                <select name="type">
-                                                    <option value="good" selected>Good</option>
-                                                    <option value="bad">Bad</option>
-                                                    <option value="both">Both</option>
-                                                </select>
-                                            </div>
+                                <li class="item-content item-input item-input-with-value">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Due Date</div>
+                                        <div class="item-input-wrap">
+                                            <input name="dueDate" type="date" value="2018-04-30" placeholder="Please choose dueDate" class="input-with-value">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="item-content item-input item-input-with-value">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Reminder</div>
+                                        <div class="item-input-wrap">
+                                            <input name="reminder" type="datetime-local" placeholder="Choose a reminder date" class="input-with-value">
                                         </div>
                                     </div>
                                 </li>
@@ -75,9 +71,7 @@
                     </div>
                     <div class="dialog-buttons">
                         <span class="dialog-button cancel-edit-task">Cancel</span>
-                        <span class="dialog-button save-edit-task edit-${
-                                      task.id
-                                    } edit-task">Save</span>
+                        <span class="dialog-button save-edit-task edit-task">Save</span>
                     </div>
                 </div>
             </div>
