@@ -1,10 +1,11 @@
 import Framework7 from 'framework7';
 import Auth from './auth';
+const services = require('./../../../services-config.json');
 
 export default class Habits {
   constructor() {
     this.auth = new Auth();
-    this.API_URL = 'http://localhost:4002';
+    this.API_URL = `http://${services['habits']}`;
   }
 
   async getHabit(habitId) {
