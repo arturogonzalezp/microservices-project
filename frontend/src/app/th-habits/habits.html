@@ -1,0 +1,144 @@
+<div class="page" data-name="habits">
+    <div class="toolbar tabbar tabbar-labels toolbar-bottom-md">
+        <div class="toolbar-inner">
+            <a href="#habits" class="tab-link tab-link-active">
+                <i class="icon f7-icons ios-only">heart</i>
+                <i class="icon icon-fill f7-icons ios-only">heart_fill</i>
+                <i class="icon material-icons md-only">heart</i>
+                <span class="tabbar-label">Habits</span>
+            </a>
+            <a href="../th-tasks/tasks.html#tasks" class="tab-link">
+                <i class="icon f7-icons ios-only">check_round</i>
+                <i class="icon icon-fill f7-icons ios-only">check_round_fill</i>
+                <i class="icon material-icons md-only">check_round</i>
+                <span class="tabbar-label">Tasks</span>
+            </a>
+        </div>
+    </div>
+    <div class="tabs">
+        <div id="habits" class="page-content tab tab-active">
+            <div class="fab fab-right-bottom fab-morph open-add-habit">
+                <a href="#">
+                    <i class="icon f7-icons ios-only">add</i>
+                    <i class="icon material-icons md-only">add</i>
+                </a>
+            </div>
+            <div class="dialog edit-habit-dialog">
+                <div class="dialog-inner">
+                    <div class="dialog-title">
+                        Edit Habit
+                    </div>
+                    <div class="dialog-text">
+                    </div>
+                    <div class="list no-hairlines-md no-hairlines-ios">
+                        <form class="list form-store-data" id="edit-habits-form">
+                            <ul>
+                                <li class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Habit Title</div>
+                                        <div class="item-input-wrap">
+                                            <input name="title" type="text" placeholder="New habit name">
+                                            <span class="input-clear-button"></span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="item-content item-input">
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Difficulty</div>
+                                            <div class="item-input-wrap">
+                                                <select name="difficulty">
+                                                    <option value="easy" selected>Easy</option>
+                                                    <option value="medium">Medium</option>
+                                                    <option value="hard">Hard</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="item-content item-input">
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Type</div>
+                                            <div class="item-input-wrap">
+                                                <select name="type">
+                                                    <option value="good" selected>Good</option>
+                                                    <option value="bad">Bad</option>
+                                                    <option value="both">Both</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+                    <div class="dialog-buttons">
+                        <span class="dialog-button cancel-edit-habit">Cancel</span>
+                        <span class="dialog-button save-edit-habit edit-${
+                              habit.id
+                            } edit-habit">Save</span>
+                    </div>
+                </div>
+            </div>
+            <div class="dialog add-habit-dialog">
+                <div class="dialog-inner">
+                    <div class="dialog-title">
+                        Add new Habit
+                    </div>
+                    <div class="dialog-text">
+                    </div>
+                    <div class="list no-hairlines-md no-hairlines-ios">
+                        <form class="list form-store-data" id="habits-form">
+                            <ul>
+                                <li class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Habit Title</div>
+                                        <div class="item-input-wrap">
+                                            <input name="title" type="text" placeholder="New habit name">
+                                            <span class="input-clear-button"></span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="item-content item-input">
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Difficulty</div>
+                                            <div class="item-input-wrap">
+                                                <select name="difficulty">
+                                                    <option value="easy" selected>Easy</option>
+                                                    <option value="medium">Medium</option>
+                                                    <option value="hard">Hard</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="item-content item-input">
+                                    <div class="item-content item-input">
+                                        <div class="item-inner">
+                                            <div class="item-title item-label">Type</div>
+                                            <div class="item-input-wrap">
+                                                <select name="type">
+                                                    <option value="good" selected>Good</option>
+                                                    <option value="bad">Bad</option>
+                                                    <option value="both">Both</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+                    <div class="dialog-buttons">
+                        <span class="dialog-button cancel-add-habit">Cancel</span>
+                        <span class="dialog-button save-add-habit" id="create-habit">Save</span>
+                    </div>
+                </div>
+            </div>
+            <div class="cards-container">
+            </div>
+        </div>
+    </div>
+</div>

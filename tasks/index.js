@@ -39,7 +39,6 @@ app.get('/user/:email/task', (req, res) => {
             res.status(400);
             res.send(result);
         }
-
         res.send(result);
     });
 });
