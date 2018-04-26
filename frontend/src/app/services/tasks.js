@@ -7,11 +7,28 @@ export default class Tasks {
     this.API_URL = 'http://localhost:4003';
   }
 
+  async getTask(taskId) {
+    const user = this.auth.getUser();
+    const promise = new Promise((resolve, reject) => {
+      Framework7.request.get(
+        `${this.API_URL}/task/${taskId}`,
+        (data, status, xhr) => {
+          resolve(data);
+        },
+        (xhr, status) => {
+          reject(xhr.responseText);
+        },
+      );
+    });
+    const response = await promise;
+    return response;
+  }
+
   async getTasks() {
     const user = this.auth.getUser();
     const promise = new Promise((resolve, reject) => {
       Framework7.request.get(
-        `${this.API_URL}/user/${user.email}/tasks`,
+        `${this.API_URL}/user/${user.email}/task`,
         (data, status, xhr) => {
           resolve(data);
         },
@@ -43,18 +60,21 @@ export default class Tasks {
 
   async newTask(task) {
     const user = this.auth.getUser();
+    console.log(user);
     const promise = new Promise((resolve, reject) => {
       Framework7.request.post(
         `${this.API_URL}/user/${user.email}/task`,
         task,
         (data, status, xhr) => {
-          resolve(xhr);
+          resolve(data);
         },
         (xhr, status) => {
           reject(xhr.responseText);
         },
       );
     });
+    const response = await promise;
+    return response;
   }
 
   async updateTask(task) {
@@ -64,7 +84,7 @@ export default class Tasks {
         `${this.API_URL}/task/${task.id}`,
         task,
         (data, status, xhr) => {
-          resolve(xhr);
+          resolve(data);
         },
         (xhr, status) => {
           reject(xhr.responseText);
@@ -80,7 +100,7 @@ export default class Tasks {
         `${this.API_URL}/task/${task.id}`,
         task,
         (data, status, xhr) => {
-          resolve(xhr);
+          resolve(data);
         },
         (xhr, status) => {
           reject(xhr.responseText);

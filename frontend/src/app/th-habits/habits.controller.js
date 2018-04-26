@@ -40,15 +40,12 @@ function HabitsController() {
 }
 
 function newHabit(habit) {
-  console.log(habit);
   habits
     .newHabit(habit)
     .then(response => {
-      console.log('YEAH');
       console.log(response);
     })
     .catch(error => {
-      console.log('Chingo');
       console.log(error);
     })
     .finally(() => {});
