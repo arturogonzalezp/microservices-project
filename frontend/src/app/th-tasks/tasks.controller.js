@@ -4,19 +4,13 @@ import Tasks from '../services/tasks';
 
 const $$ = Dom7;
 const tasks = new Tasks();
+var tasksArray = [];
+var notificationClickToClose;
 
 function TasksController() {
   console.log('Tasks');
   getTasks();
-
-  var notificationClickToClose = app.notification.create({
-    icon: '<i class="icon demo-icon">7</i>',
-    title: 'Framework7',
-    titleRightText: 'now',
-    subtitle: 'Notification with close on click',
-    text: 'Click me to close',
-    closeOnClick: true,
-  });
+  checkTime();
 
   $$('.open-click-to-close').on('click', function() {
     notificationClickToClose.open();
@@ -50,6 +44,29 @@ function TasksController() {
     console.log(task);
     newTask(task);
   });
+}
+
+function checkTime() {
+
+  setInterval(function() {
+    tasksArray.forEach(date => {
+
+      notificationClickToClose = app.notification.create({
+        icon: '<i class="icon demo-icon"></i>',
+        title: 'HASK',
+        titleRightText: 'now',
+        subtitle: 'Task Reminder',
+        text: date.title,
+        closeOnClick: true,
+      });
+
+      let dateN = date.reminder_date;
+      let newDate = new Date(dateN);
+      if (newDate >= new Date()) {
+        notificationClickToClose.open();
+      }
+    });
+  }, 5000);
 }
 
 function newTask(task) {
@@ -114,9 +131,12 @@ function readTasks(response) {
   for (let myTask in parsedResponse.data) {
     let task = parsedResponse.data[myTask];
     let date = task.due_date;
-    let newDate = new Date(date).toString();
-    let splitNewDate = newDate.split(' ');
-    let formatedDate = splitNewDate[0] + ' ' + splitNewDate[1] + ' ' + splitNewDate[2]; 
+    let newDate = new Date(date);
+    let splitNewDate = newDate.toString().split(' ');
+    let formatedDate =
+      splitNewDate[0] + ' ' + splitNewDate[1] + ' ' + splitNewDate[2];
+
+    tasksArray.push(task);
     let taskCard = $$(`<div class="card">
         <div class="card-header bg-color-gray">
         ${task.title}
@@ -142,6 +162,8 @@ function readTasks(response) {
       .then(response => {
         const parsedResponse = JSON.parse(response);
         deleteTask(parsedResponse.data[0]);
+        var index = Array.indexOf(parsedResponse.data[0])
+        tasksArray.splice(index,1);
       })
       .catch(error => {});
   });
