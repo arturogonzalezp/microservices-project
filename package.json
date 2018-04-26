@@ -8,7 +8,8 @@
     "reports": "node reports/index.js",
     "tasks": "node tasks/index.js",
     "search": "node search-services.js",
-    "test": "mocha tests/*.js || true"
+    "test": "mocha tests/*.js || true",
+    "install-all": "npm install && cd accounts && npm install && cd ../tasks && npm install && cd ../habits && npm install && cd ../reports && npm install"
   },
   "repository": {
     "type": "git",
