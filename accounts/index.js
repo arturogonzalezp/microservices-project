@@ -10,6 +10,13 @@ const port = 4001;
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "PUT, GET, DELETE, PATCH");
+    next();
+  });
+
 app.post('/account', (req, res) => {
     let { email, password, name } = req.body;
     if (email && password && name) {

@@ -1,8 +1,11 @@
 
+ 
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var mysql = require('mysql');
+const db = require('./utils/db-mananger');
+
 
 const port = 4004;
 
@@ -16,41 +19,25 @@ var taskPool = mysql.createPool({
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "PUT, GET, DELETE, PATCH");
+    next();
+  });
+
 // Done.
 app.get('/reports/tasks', (req, res) => {
     let real_time = req.query.real_time;
     let todaysDate = Date();
 
-    taskPool.getConnection(function (err, conn) {
-        var query = "SELECT " + 
-        "(SELECT COUNT(*) FROM Task WHERE completed = 1) AS completedTasks, " +
-        "(SELECT COUNT(*) FROM Task WHERE completed = 1 AND due_date >= ?) AS normalCompletedTasks, " +
-        "(SELECT COUNT(*) FROM Task WHERE completed = 1 AND due_date < ?) AS delayedCompletedTasks, " + 
-        "(SELECT COUNT(*) FROM Task WHERE completed = 0 AND due_date < ?) AS delayedTasks, " + 
-        "(SELECT COUNT(*) FROM Task WHERE completed = 0) AS availableTasks, " + 
-        "(SELECT COUNT(*) FROM Task WHERE completed = 0 AND due_date = ?) AS todayToCompleteTasks";
+    db.getTaskReportAdmin(todaysDate, function(result, isSuccess){
+        if (!isSuccess) {
+            res.status(400);
+            res.send(result);
+        }
 
-        conn.query(query, [todaysDate, todaysDate, todaysDate, todaysDate], function(err, result, fields) {
-            if (err) throw err;
-
-            var resultJson = {};
-
-            if (result != "") {
-                resultJson = {
-                    code: 200,
-                    message: "Report successfully created.",
-                    data: result
-                }
-            }
-            else {
-                resultJson = {
-                    code: 400,
-                    message: "Unable to create Report."
-                }
-            }
-            res.send(resultJson);
-            conn.release();
-        });
+        res.send(result);
     });
 });
 
@@ -59,133 +46,50 @@ app.get('/reports/habits', (req, res) => {
     let real_time = req.query.real_time;
     let todaysDate = Date();
 
-    taskPool.getConnection(function (err, conn) {
-        var query = "SELECT " + 
-        "(SELECT COUNT(*) FROM Habit WHERE score > 50) AS blueHabits, " +
-        "(SELECT COUNT(*) FROM Habit WHERE score >= 40 AND score <= 50) AS greenHabits, " +
-        "(SELECT COUNT(*) FROM Habit WHERE score >= 10 AND score < 40) AS yellowHabits, " + 
-        "(SELECT COUNT(*) FROM Habit WHERE score >= 0 AND score < 10) AS orangeHabits, " + 
-        "(SELECT COUNT(*) FROM Habit WHERE score < 0) AS redHabits"; 
+    db.getHabitsReportAdmin(todaysDate, function(result, isSuccess){
+        if (!isSuccess) {
+            res.status(400);
+            res.send(result);
+        }
 
-        conn.query(query, [todaysDate, todaysDate, todaysDate, todaysDate], function(err, result, fields) {
-            if (err) throw err;
-
-            var resultJson = {};
-
-            if (result != "") {
-                resultJson = {
-                    code: 200,
-                    message: "Report successfully created.",
-                    data: result
-                }
-            }
-            else {
-                resultJson = {
-                    code: 400,
-                    message: "Unable to create Report."
-                }
-            }
-            res.send(resultJson);
-            conn.release();
-        });
+        res.send(result);
     });
 });
 
 // Done.
-app.get('/reports/tasks/user', (req, res) => {
-    let userId = req.query.userId;
+app.get('/reports/tasks/:userId', (req, res) => {
+    let userId = req.params.userId;
     let todaysDate = Date();
 
-    taskPool.getConnection(function (err, conn) {
-        var delayedTasksQuery = "SELECT title FROM Task WHERE due_date < ? AND completed = 0";
+    console.log("USER ID : " + userId);
+    db.getTaskReportUser(userId, todaysDate, function(result, isSuccess) {
+        if (!isSuccess) {
+            res.status(400);
+            res.send(result);
+        }
 
-        conn.query(delayedTasksQuery, todaysDate, function(delayedTasksErr, delayedTasksResult, fields) {
-            if (delayedTasksErr) throw delayedTasksErr;
-
-            var resultJson = {};
-
-            if (delayedTasksErr == null) {
-                var todaysTasksQuery = "SELECT title FROM Task WHERE due_date = ? AND completed = 0";
-                
-                conn.query(todaysTasksQuery, todaysDate, function(todaysTasksErr, todaysTasksResult, fields2) {
-                    if (todaysTasksErr) throw todaysTasksErr;
-                
-                    if (todaysTasksErr == null) {
-                        resultJson = {
-                            code: 200,
-                            message: "Report successfully created.",
-                            data: {
-                                todaysTasks: todaysTasksResult,
-                                delayedTasks: delayedTasksResult
-                            }
-                        }
-                    }
-
-                    res.send(resultJson);
-                    conn.release();
-                });
-            }
-            else {
-                resultJson = {
-                    code: 400,
-                    message: "Unable to create Report."
-                }
-                res.send(resultJson);
-                conn.release();
-            }
-        });
+        res.send(result);
     });
 });
 
 // Done.
-app.get('/reports/habits/user', (req, res) => {
-    let userId = req.query.userId;
+app.get('/reports/habits/:userId', (req, res) => {
+    let userId = req.params.userId;
 
-    let todaysDate = Date();
+    console.log("USER ID : " + userId);
 
-    taskPool.getConnection(function (err, conn) {
-        var goodHabitsQuery = "SELECT title FROM Habit WHERE score > 50";
+    db.getHabitsReportUser(userId, function(result, isSuccess) {
+        if (!isSuccess) {
+            res.status(400);
+            res.send(result);
+        }
 
-        conn.query(goodHabitsQuery, todaysDate, function(goodHabitsErr, goodHabitsResult, fields) {
-            if (goodHabitsErr) throw goodHabitsErr;
-
-            var resultJson = {};
-
-            if (goodHabitsErr == null) {
-                var badHabitsQuery = "SELECT title FROM Habit WHERE score < 0";
-                
-                conn.query(badHabitsQuery, todaysDate, function(badHabitsErr, badHabitsResult, fields2) {
-                    if (badHabitsErr) throw badHabitsErr;
-                
-                    if (badHabitsErr == null) {
-                        resultJson = {
-                            code: 200,
-                            message: "Report successfully created.",
-                            data: {
-                                goodHabits: goodHabitsResult,
-                                badHabits: badHabitsResult
-                            }
-                        }
-                    }
-
-                    res.send(resultJson);
-                    conn.release();
-                });
-            }
-            else {
-                resultJson = {
-                    code: 400,
-                    message: "Unable to create Report."
-                }
-                res.send(resultJson);
-                conn.release();
-            }
-        });
+        res.send(result);
     });
 });
 
 app.get('/discover', (req,res) => {
-    res.send('Reports');
+    res.send('reports');
 });
 
 app.get('*', (req, res) => {
