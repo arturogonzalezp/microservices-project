@@ -4,12 +4,15 @@ import Tasks from '../services/tasks';
 
 const $$ = Dom7;
 const tasks = new Tasks();
+var tasksArray = [];
+var notificationClickToClose;
 
 var router;
 
 function TasksController() {
   console.log('Tasks');
   getTasks();
+  checkTime();
 
   router = app.views.main.router;
 
@@ -21,7 +24,7 @@ function TasksController() {
     text: 'Click me to close',
     closeOnClick: true,
   });
-
+  
   $$('.open-click-to-close').on('click', function() {
     notificationClickToClose.open();
   });
@@ -54,6 +57,29 @@ function TasksController() {
     console.log(task);
     newTask(task);
   });
+}
+
+function checkTime() {
+
+  setInterval(function() {
+    tasksArray.forEach(date => {
+
+      notificationClickToClose = app.notification.create({
+        icon: '<i class="icon demo-icon"></i>',
+        title: 'HASK',
+        titleRightText: 'now',
+        subtitle: 'Task Reminder',
+        text: date.title,
+        closeOnClick: true,
+      });
+
+      let dateN = date.reminder_date;
+      let newDate = new Date(dateN);
+      if (newDate >= new Date()) {
+        notificationClickToClose.open();
+      }
+    });
+  }, 5000);
 }
 
 function newTask(task) {
@@ -142,9 +168,9 @@ function readTasks(response) {
           <p>${task.description}</p>
           <p>Due date: ${formatedDate}</p>
         </div>
-        <div class="card-footer">
-          <button class="button open-edit-task id-${task.id}">Edit</button>
-          <button class="button delete-task id-${task.id}">Delete</button>
+        <div class="card-body">
+          <p> ${task.description}</p>
+          <p> Due date: ${formatedDate}</p>
         </div>
       </div>`,
     );
@@ -157,6 +183,8 @@ function readTasks(response) {
       .then(response => {
         const parsedResponse = JSON.parse(response);
         deleteTask(parsedResponse.data[0]);
+        var index = Array.indexOf(parsedResponse.data[0])
+        tasksArray.splice(index,1);
       })
       .catch(error => {});
   });
