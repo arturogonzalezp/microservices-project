@@ -1,10 +1,11 @@
 import Framework7 from 'framework7';
 import Auth from './auth';
+const services = require('./../../../services-config.json');
 
 export default class Tasks {
   constructor() {
     this.auth = new Auth();
-    this.API_URL = 'http://192.168.1.72:4003';
+    this.API_URL = `http://${services['tasks']}`;
   }
 
   async getTask(taskId) {
