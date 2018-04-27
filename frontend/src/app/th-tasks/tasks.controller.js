@@ -10,7 +10,6 @@ var notificationClickToClose;
 var router;
 
 function TasksController() {
-  console.log('Tasks');
   getTasks();
   checkTime();
 
@@ -78,6 +77,7 @@ function checkTime() {
       if (newDate >= new Date()) {
         notificationClickToClose.open();
       }
+      console.log("hola");
     });
   }, 5000);
 }
@@ -156,6 +156,7 @@ function readTasks(response) {
     let task = parsedResponse.data[myTask];
     let date = task.due_date;
     let newDate = new Date(date);
+    tasksArray.push(task);
     let splitNewDate = newDate.toString().split(' ');
     let formatedDate =
       splitNewDate[0] + ' ' + splitNewDate[1] + ' ' + splitNewDate[2];
@@ -183,8 +184,6 @@ function readTasks(response) {
       .then(response => {
         const parsedResponse = JSON.parse(response);
         deleteTask(parsedResponse.data[0]);
-        var index = Array.indexOf(parsedResponse.data[0])
-        tasksArray.splice(index,1);
       })
       .catch(error => {});
   });
