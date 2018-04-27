@@ -18,3 +18,19 @@ npm start
 ## MySQL DB structure
 
 [Click here](config/db-structure.sql)
+
+## Code Metrics
+
+[Plato](https://github.com/es-analysis/plato)
+
+```shell
+npm install -g plato
+plato -r -d plato-report ./src/
+```
+
+[Complexity-Report](https://github.com/escomplex/complexity-report)
+
+```shell
+npm install -g complexity-report
+cr ./src/
+```
